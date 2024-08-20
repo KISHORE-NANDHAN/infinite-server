@@ -27,3 +27,13 @@ npm install mongoose express cors nodemon dotenv
 - cors: A package to enable Cross-Origin Resource Sharing.
 - nodemon :  A utility that monitors for any changes in your source and automatically restarts your server.
 - dotenv: A module to load environment variables from a .env file into process.env.
+
+3. Install Dependencies
+Install the necessary dependencies for your Node.js server by running the following command:
+
+```bash
+npm install bcrypt jsonwebtoken
+```
+- bcrypt: This library is used for hashing passwords before storing them in a database. It adds a layer of security by making it difficult for attackers to retrieve the original password from the hash.
+
+- jsonwebtoken (jwt): This library is used to create and verify JSON Web Tokens (JWTs). JWTs are commonly used for securely transmitting information (like user authentication data) between parties, especially in web applications.
