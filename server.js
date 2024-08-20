@@ -4,6 +4,7 @@ const port = 3500;
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 
 // Import the User model from your schema
 const User = require('./Schemas/SignupSchema');
@@ -33,6 +34,26 @@ app.post('/register', async (req, res) => {
     try {
         const { username, email, dob, gender, mobile, password } = req.body;
 
+        // Check if email, username, or mobile already exists
+        const existingUser = await User.findOne({
+            $or: [
+                { email: email },
+                { username: username },
+                { mobile: mobile }
+            ]
+        });
+
+        if (existingUser) {
+            // Check what field already exists
+            if (existingUser.email === email) {
+                return res.status(409).json({ message: 'Email already exists' });
+            } else if (existingUser.username === username) {
+                return res.status(409).json({ message: 'Username already exists' });
+            } else if (existingUser.mobile === mobile) {
+                return res.status(409).json({ message: 'Mobile number already exists' });
+            }
+        }
+
         // Create a new user
         const newUser = new User({
             username,
@@ -47,8 +68,32 @@ app.post('/register', async (req, res) => {
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
     } catch (error) {
-        console.error(error);
+        console.error('Error during registration:', error);
         res.status(500).json({ message: 'Error registering user', error });
+    }
+});
+
+// Route to handle user login
+app.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        // Compare the password using bcrypt directly
+        const isValidPassword = user.password === password;
+        if (!isValidPassword) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        // If valid, respond with a success message
+        res.status(200).json({ message: 'Login successful' });
+    } catch (error) {
+        console.error('Error during login:', error);
+        return res.status(500).json({ message: 'Error logging in', error });
     }
 });
 
@@ -58,7 +103,7 @@ mongoose.connect(process.env.mongo_uri || mongo_url, {
     useUnifiedTopology: true,
 })
 .then(() => {
-        console.log('Connected to MongoDB database');
-        app.listen(port, () => console.log(`Server is live at ${port}`));
+    console.log('Connected to MongoDB database');
+    app.listen(port, () => console.log(`Server is live at ${port}`));
 })
 .catch(err => console.error('MongoDB connection error:', err));
