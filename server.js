@@ -37,5 +37,5 @@ app.use('/posts', require('./routes/Post'));
 app.use('/users', require('./routes/Users'));
 
 // Start server
-const port = process.env.PORT || 3500;
+const port = process.env.PORT;
 app.listen(port, () => console.log(`Server running on port ${port}`));

@@ -23,7 +23,7 @@ const SignupSchema = new Schema({
         required: true,
     },
     mobile: {
-        type: String, // Change to String for phone numbers
+        type: String, 
         required: true,
         unique: true,
     },
