@@ -47,17 +47,16 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid email' });
         }
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ message: 'Invalid password' });
         }
 
         req.session.user = {
-            username: user.username,
-            email: user.email,
+            Id : user._id
         };
 
         res.status(200).json({ message: 'Login successful', user: req.session.user });
@@ -66,5 +65,15 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ message: 'Error logging in', error });
     }
 });
+
+router.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+      if (err) {
+        return res.status(500).json({ message: 'Error logging out' });
+      }
+      res.clearCookie('session_token');
+      res.status(200).json({ message: 'Logout successful' });
+    });
+  });
 
 module.exports = router;

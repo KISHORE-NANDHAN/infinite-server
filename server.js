@@ -35,7 +35,7 @@ app.use(session({
 app.use('/auth', require('./routes/Register'));
 app.use('/posts', require('./routes/Post'));
 app.use('/users', require('./routes/Users'));
-
+app.use('/getData',require('./routes/GetData'))
 // Start server
 const port = process.env.PORT;
 app.listen(port, () => console.log(`Server running on port ${port}`));
