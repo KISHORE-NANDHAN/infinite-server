@@ -5,10 +5,8 @@ const MongoStore = require('connect-mongo');
 require('dotenv').config();
 const connectDB = require('./DbConnection/db');
 
-// Initialize Express
 const app = express();
 
-// Connect to MongoDB
 connectDB();
 
 // Middleware
@@ -33,9 +31,10 @@ app.use(session({
 
 // Routes
 app.use('/auth', require('./routes/Register'));
-app.use('/posts', require('./routes/Post'));
+app.use('/api/posts', require('./routes/Post'));
 app.use('/users', require('./routes/Users'));
-app.use('/getData',require('./routes/GetData'))
+app.use('/getData', require('./routes/GetData'));
+
 // Start server
-const port = process.env.PORT;
+const port = process.env.PORT || 3500;
 app.listen(port, () => console.log(`Server running on port ${port}`));

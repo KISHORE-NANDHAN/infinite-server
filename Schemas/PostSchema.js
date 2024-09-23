@@ -6,20 +6,24 @@ const PostSchema = new Schema({
         type: String,
         required: true,
     },
+    ProfilePicture: {
+        type: String,
+        required: true,
+    },
     image: {
-        type: String, // Store the filename or path of the image
+        type: String,
         required: true
     },
     caption: {
         type: String,
     },
-    time: {
-        type: Date,
-        default: Date.now
-    },
     likes: {
         type: Number,
         default: 0
+    },
+    time: {
+        type: Date,
+        default: Date.now
     }
 });
 

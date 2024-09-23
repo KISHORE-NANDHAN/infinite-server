@@ -1,25 +1,13 @@
-const express = require('express');
-const multer = require('multer');
-const { GridFsStorage } = require('multer-gridfs-storage');
+const express = require('express'); 
+const User = require('../Schemas/UserSchema'); 
 const Post = require('../Schemas/PostSchema');
-const User = require('../Schemas/ProfileSchema');
-const authenticate = require('../middlewares/auth');
 
 const router = express.Router();
 
-const storage = new GridFsStorage({
-    url: process.env.MONGO_URI,
-    file: (req, file) => ({
-        filename: file.originalname,
-        bucketName: 'uploads',
-    }),
-});
+router.post('/', async (req, res) => {
 
-const upload = multer({ storage });
-
-router.post('/', authenticate, upload.single('image'), async (req, res) => {
     try {
-        const { username, caption } = req.body;
+        const { username, caption, imageUrl } = req.body;
 
         const user = await User.findOne({ username });
         if (!user) {
@@ -28,7 +16,8 @@ router.post('/', authenticate, upload.single('image'), async (req, res) => {
 
         const newPost = new Post({
             username,
-            image: req.file.filename,
+            ProfilePicture: user.profilePicture, 
+            image: imageUrl, 
             caption,
         });
 

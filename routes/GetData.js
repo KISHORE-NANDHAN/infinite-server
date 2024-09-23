@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../Schemas/SignupSchema'); // Your user schema
+const User = require('../Schemas/UserSchema'); // Your user schema
 const mongoose = require('mongoose');
 const router = express.Router();
 const ObjectId = mongoose.Types.ObjectId;
