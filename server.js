@@ -32,8 +32,9 @@ app.use(session({
 // Routes
 app.use('/auth', require('./routes/Register'));
 app.use('/api/posts', require('./routes/Post'));
-app.use('/users', require('./routes/Users'));
+app.use('/ProfileUpdate', require('./routes/ProfileUpdate'));
 app.use('/getData', require('./routes/GetData'));
+app.use('api/getAllPosts',require('./routes/getAllPosts'));
 
 // Start server
 const port = process.env.PORT || 3500;

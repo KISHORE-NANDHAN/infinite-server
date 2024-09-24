@@ -5,7 +5,6 @@ const Post = require('../Schemas/PostSchema');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-
     try {
         const { username, caption, imageUrl } = req.body;
 
@@ -15,6 +14,7 @@ router.post('/', async (req, res) => {
         }
 
         const newPost = new Post({
+            user: user._id, // Include the user ID here
             username,
             ProfilePicture: user.profilePicture, 
             image: imageUrl, 
@@ -28,5 +28,6 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Error creating post', error });
     }
 });
+
 
 module.exports = router;
