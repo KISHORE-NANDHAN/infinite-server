@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../Schemas/UserSchema');
-const authenticate = require('../middlewares/auth');
 const mongoose = require('mongoose');
+const authenticate = require('../middlewares/auth');
 
 const router = express.Router();
 const ObjectId = mongoose.Types.ObjectId;
@@ -10,13 +10,12 @@ const ObjectId = mongoose.Types.ObjectId;
 router.put('/:id', async (req, res) => { 
   const { id } = req.params;  
   const { username, bio, profilePicture } = req.body;
-
   try {
-    // Use ObjectId for the update
-    const updatedUser = await User.findByIdAndUpdate(
-      new ObjectId(id),  
-      { username, bio, profilePicture },
-      { new: true, runValidators: true }
+    // Find user by ID and update using findOneAndUpdate
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: new ObjectId(id) },  // Query object, can be customized to search by other fields
+      { $set: { username, bio, profilePicture } },  // Use $set to explicitly set fields
+      { new: true, runValidators: true }  // Return the new document after update
     );
 
     // Check if user exists
@@ -26,7 +25,6 @@ router.put('/:id', async (req, res) => {
 
     // Respond with the updated user information
     res.json(updatedUser);
-    console.log(updatedUser)
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ message: 'Internal server error' });
