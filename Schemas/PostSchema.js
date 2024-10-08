@@ -19,6 +19,7 @@ const PostSchema = new Schema({
         ref: 'User',  // Array of users who liked the post
     }],
     comments: [{
+        pfp : { type :String },
         user: { type: Schema.Types.ObjectId, ref: 'User' },
         text: { type: String, required: true },
         time: { type: Date, default: Date.now }

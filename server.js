@@ -32,9 +32,8 @@ app.use(session({
 // Routes
 app.use('/auth', require('./routes/Register'));
 app.use('/api/posts', require('./routes/Post')); 
-app.use('/api/comments', require('./routes/Comment.js')); // For comments
 
-app.use('/api/posts', require('./routes/Like.js')); // Handle post likes at /api/posts/:postId/like
+app.use('/api/posts', require('./routes/LikeNComment.js')); // Handle post likes at /api/posts/:postId/like
 
 app.use('/api/users', require('./routes/User.js')); // For user details
 app.use('/ProfileUpdate', require('./routes/ProfileUpdate'));
