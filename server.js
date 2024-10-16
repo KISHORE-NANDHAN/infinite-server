@@ -33,13 +33,16 @@ app.use(session({
 app.use('/auth', require('./routes/Register'));
 app.use('/api/posts', require('./routes/Post')); 
 
-app.use('/api/posts', require('./routes/LikeNComment.js')); // Handle post likes at /api/posts/:postId/like
+app.use('/api/posts', require('./routes/LikeNComment.js')); 
 
 app.use('/api/users', require('./routes/User.js')); // For user details
 app.use('/ProfileUpdate', require('./routes/ProfileUpdate'));
 app.use('/getData', require('./routes/GetData'));
 app.use('/api/getAllPosts', require('./routes/getAllPosts'));
+app.use('/getUsers', require('./routes/SearchUser.js'));
+
+
 
 // Start server
 const port = process.env.PORT || 3500;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server running on port http://localhost:${port}`));

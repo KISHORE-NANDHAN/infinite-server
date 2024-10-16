@@ -53,7 +53,7 @@ router.post('/:postId/comment', async (req, res) => {
         const post = await Post.findById(req.params.postId);
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
-        }
+        }c
         const newComment = {
             pfp, 
             user: userId, // Use 'user' key instead of 'userId' for consistency with the schema
