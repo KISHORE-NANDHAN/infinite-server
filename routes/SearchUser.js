@@ -28,8 +28,7 @@ router.get('/', async (req, res) => {
 
 router.get('/posts/:id', async (req, res) => {
   try {
-    const {id} = req.params.id;
-    console.log(id)
+    const id = req.params.id;
     const posts = await Post.find({ user: new mongoose.Types.ObjectId(id)}) // Assuming 'user' is a reference to User in PostSchema
       .populate('user', 'username profilePicture') // Populate user info in posts
       .select('image caption createdAt'); // Select the fields you want to return

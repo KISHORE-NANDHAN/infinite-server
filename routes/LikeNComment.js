@@ -6,11 +6,11 @@ const mongoose = require('mongoose');
 
 // Middleware to check if the ObjectId is valid (optional)
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
-const  ObjectId = mongoose.Types.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
 
 // Like/Unlike Post
 router.post('/:postId/like', async (req, res) => {
-    const userId  = req.body.currentUserId; 
+    const userId = req.body.currentUserId; 
     const postId = req.params.postId;
 
     if (!isValidObjectId(postId) || !isValidObjectId(userId)) {
@@ -42,8 +42,11 @@ router.post('/:postId/like', async (req, res) => {
         res.status(500).json({ message: 'Failed to like/unlike post' });
     }
 });
+
+// Comment on a Post
 router.post('/:postId/comment', async (req, res) => {
     const { userId, username, text, pfp } = req.body;
+
     // Validate postId
     if (!isValidObjectId(req.params.postId) || !isValidObjectId(userId)) {
         return res.status(400).json({ message: 'Invalid post ID or user ID' });
@@ -53,11 +56,12 @@ router.post('/:postId/comment', async (req, res) => {
         const post = await Post.findById(req.params.postId);
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
-        }c
+        }
+
         const newComment = {
             pfp, 
             user: userId, // Use 'user' key instead of 'userId' for consistency with the schema
-            username : username,
+            username: username,
             text,
             time: new Date(),
         };
@@ -67,11 +71,24 @@ router.post('/:postId/comment', async (req, res) => {
 
         // Return updated comments
         res.json({ comments: post.comments });
-        console.log(post.comments);
     } catch (error) {
         console.error('Error adding comment:', error);
         res.status(500).json({ message: 'Failed to add comment' });
     }
 });
+
+router.delete('/:postid',async (req,res)=>{
+
+    try{
+        const post = await Post.findByIdAndDelete(new mongoose.Types.ObjectId(req.params.postid));
+        if(!post){
+            return res.status(404).json({message:'Post not found'});
+        }
+        res.json({message:'Post deleted'});
+        }catch(error){
+            console.log(error);
+             res.status(500).json({message:'Failed to delete post'});
+        }
+})
 
 module.exports = router;

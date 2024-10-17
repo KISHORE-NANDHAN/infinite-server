@@ -21,6 +21,7 @@ const PostSchema = new Schema({
     comments: [{
         pfp : { type :String },
         user: { type: Schema.Types.ObjectId, ref: 'User' },
+        username: {type : String , require: true},
         text: { type: String, required: true },
         time: { type: Date, default: Date.now }
     }],
