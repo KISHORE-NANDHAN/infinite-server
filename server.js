@@ -13,7 +13,7 @@ connectDB();
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH' , 'DELETE'],
     credentials: true,
 }));
 
@@ -32,14 +32,13 @@ app.use(session({
 // Routes
 app.use('/auth', require('./routes/Register'));
 app.use('/api/posts', require('./routes/Post')); 
-
 app.use('/api/posts', require('./routes/LikeNComment.js')); 
-
-app.use('/api/users', require('./routes/User.js')); // For user details
+app.use('/api/users', require('./routes/User.js')); 
 app.use('/ProfileUpdate', require('./routes/ProfileUpdate'));
 app.use('/getData', require('./routes/GetData'));
 app.use('/api/getAllPosts', require('./routes/getAllPosts'));
 app.use('/getUsers', require('./routes/SearchUser.js'));
+app.use('/api/notifications',require('./routes/Notifications.js'));
 
 
 
