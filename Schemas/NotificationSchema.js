@@ -28,7 +28,6 @@ const notificationSchema = new mongoose.Schema({
   },  // Timestamp
 });
 
-// Populate action user's username and profile picture
 notificationSchema.virtual('actionUserDetails', {
   ref: 'User',
   localField: 'actionUser',
@@ -37,7 +36,6 @@ notificationSchema.virtual('actionUserDetails', {
   select: 'username profilePicture'
 });
 
-// Populate post image URL
 notificationSchema.virtual('postDetails', {
   ref: 'Post',
   localField: 'post',

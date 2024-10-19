@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, dob, gender, mobile, password } = req.body;
+        const { username, email, dob, gender, mobile, password, country } = req.body;
 
         const existingUser = await User.findOne({
             $or: [{ email }, { username }, { mobile }],

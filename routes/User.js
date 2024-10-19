@@ -30,7 +30,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/:id/follow', async (req, res) => {
     const userId = req.params.id;
-    const {currentUserId} = req.body
+    const { currentUserId } = req.body
+    console.log(userId,currentUserId,req.body)
     // Validate ObjectId
     if (!isValidObjectId(userId) || !isValidObjectId(currentUserId)) {
         return res.status(400).json({ message: 'Invalid user ID' });
