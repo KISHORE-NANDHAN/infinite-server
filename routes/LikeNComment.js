@@ -76,7 +76,7 @@ router.post('/:postId/comment', async (req, res) => {
         res.status(500).json({ message: 'Failed to add comment' });
     }
 });
-
+//user post delete
 router.delete('/:postid',async (req,res)=>{
 
     try{
@@ -90,5 +90,41 @@ router.delete('/:postid',async (req,res)=>{
              res.status(500).json({message:'Failed to delete post'});
         }
 })
-
+// Edit a comment
+router.put('/:postId/comment/:commentId', async (req, res) => {
+    try {
+      const { text, userId } = req.body;
+      const post = await Post.findById(req.params.postId);
+  
+      const comment = post.comments.id(req.params.commentId);
+      if (comment.userId.toString() === userId) {
+        comment.text = text; // Update the comment text
+        await post.save();
+        res.status(200).json({ message: 'Comment edited successfully', comments: post.comments });
+      } else {
+        res.status(403).json({ message: 'You can only edit your own comments' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error editing comment', error });
+    }
+  });
+  
+  // Delete a comment
+  router.delete('/:postId/comment/:commentId', async (req, res) => {
+    try {
+      const { userId } = req.body;
+      const post = await Post.findById(req.params.postId);
+  
+      const comment = post.comments.id(req.params.commentId);
+      if (comment.userId.toString() === userId) {
+        comment.remove(); // Remove the comment
+        await post.save();
+        res.status(200).json({ message: 'Comment deleted successfully', comments: post.comments });
+      } else {
+        res.status(403).json({ message: 'You can only delete your own comments' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error deleting comment', error });
+    }
+  });
 module.exports = router;

@@ -1,13 +1,13 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../Schemas/UserSchema');
+const Freeze = require('../Schemas/FreezeSchema')
 
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, dob, gender, mobile, password, country } = req.body;
-
+        const { username, email, dob, gender, mobile, password, cp ,country } = req.body;
         const existingUser = await User.findOne({
             $or: [{ email }, { username }, { mobile }],
         });
@@ -31,6 +31,7 @@ router.post('/register', async (req, res) => {
             gender,
             mobile,
             password: hashedPassword,
+            country
         });
 
         const savedUser = await newUser.save();
@@ -49,7 +50,10 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ message: 'Invalid email' });
         }
-
+        const find = await Freeze.findOne({ userId:user._id})
+        if(find){
+            return res.status(401).json({ message: `Your account is frozen due to ${find.freezeReason} and end duration is ${find.freezeEnd} hrs` });
+        }
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ message: 'Invalid password' });

@@ -9,7 +9,6 @@ const app = express();
 
 connectDB();
 
-// Middleware
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -39,6 +38,7 @@ app.use('/getData', require('./routes/GetData'));
 app.use('/api/getAllPosts', require('./routes/getAllPosts'));
 app.use('/getUsers', require('./routes/SearchUser.js'));
 app.use('/api/notifications',require('./routes/Notifications.js'));
+app.use('/api/AdminPowers',require('./routes/AdminHandle.js'))
 
 
 

@@ -25,11 +25,11 @@ const SignupSchema = new Schema({
         required: true,
         unique: true,
     },
-    country: {
-        type: String, 
+    password: {
+        type: String,
         required: true,
     },
-    password: {
+    country: {
         type: String,
         required: true,
     },
